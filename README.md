@@ -6,6 +6,7 @@
 **Quizzo** est une application de questionnaires en ligne : création, diffusion et collecte des réponses. C'est le projet fil rouge du module DevOps 2 (ECUE733). Il évolue de séance en séance : gestion de projet, travail collaboratif avec Git, puis conteneurs, intégration et déploiement continus.
 
 Ce dépôt est le **point de départ** : une application Next.js (App Router, TypeScript) qui contient seulement une page d'accueil.
+Ce dépôt est le **point de départ** : une application Next.js (App Router, TypeScript) qui contient seulement une page d'accueil.
 
 ## Séance 1 — TP1
 
