@@ -33,19 +33,13 @@ Prérequis : Docker installé.
 Construire l'image (build) :
 
 ```bash
-docker build -t quizzo .
-```
-
-Taguer l'image (remplacez `<utilisateur>` par votre identifiant Docker Hub) :
-
-```bash
-docker tag quizzo <utilisateur>/quizzo:1.0
+docker build -t quizzo:1.0 .
 ```
 
 Lancer le conteneur (run) :
 
 ```bash
-docker run -d --name quizzo -p 3000:3000 <utilisateur>/quizzo:1.0   # http://localhost:3000
+docker run -d --name quizzo -p 3000:3000 quizzo:1.0   # http://localhost:3000
 ```
 
 Si le port 3000 est déjà utilisé sur votre machine, changez le port côté hôte, par exemple `-p 8080:3000`.
