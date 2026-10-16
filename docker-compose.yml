@@ -1,0 +1,68 @@
+# Stack Quizzo : application Next.js + base PostgreSQL + interface pgAdmin
+# Lancement : docker compose up -d --build
+
+services:
+  # Application Quizzo, construite à partir du Dockerfile du projet
+  app:
+    build: .
+    image: quizzo:1.0
+    container_name: quizzo
+    ports:
+      - "3000:3000"
+    environment:
+      # Chaîne de connexion à la base (le nom d'hôte est le nom du service : db)
+      DATABASE_URL: postgres://strapi:demo@db:5432/vitrine
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - quizzo-net
+
+  # Base de données PostgreSQL
+  db:
+    image: postgres:16-alpine
+    container_name: vitrine-db
+    environment:
+      POSTGRES_DB: vitrine
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: demo
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strapi -d vitrine"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - quizzo-net
+
+  # Interface web d'administration de PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - quizzo-net
+
+# Réseau dédié : les services communiquent entre eux par leur nom (app, db, pgadmin)
+networks:
+  quizzo-net:
+    name: quizzo-net
+    driver: bridge
+
+volumes:
+  db-data:
+  pgadmin-data:
